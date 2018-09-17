@@ -1,0 +1,595 @@
+{
+	"variables": [],
+	"info": {
+		"name": "SecureMail Messaging API (REST)",
+		"_postman_id": "8569475d-7268-d329-1572-0119ea8cff47",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Account",
+			"description": "",
+			"item": [
+				{
+					"name": "Get a Session Key",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var data = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"SessionKey\", data.SessionKey);"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Account/Logon",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"UserIdOrEmail\":\"email\",\n    \"Password\":\"password\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Your Account Details",
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Account/Details",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "UserName",
+									"value": "kylec@datamotion.com",
+									"type": "text"
+								},
+								{
+									"key": "Password",
+									"value": "Test#Password",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Change Your Password",
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Account/ChangePassword",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"OldPassword\":\"oldpassword\",\n    \"NewPassword\":\"newpassword\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Account/Logout",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Folder",
+			"description": "",
+			"item": [
+				{
+					"name": "List All Folders",
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Folder/List",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "UserName",
+									"value": "kylec@datamotion.com",
+									"type": "text"
+								},
+								{
+									"key": "Password",
+									"value": "Test#Password",
+									"type": "text"
+								}
+							]
+						},
+						"description": "Returns all folders of the user including appropriate/useful information"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a New Folder",
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Folder/",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"FolderName\":\"Folder Name\",\n    \"FolderType\": 0\n}"
+						},
+						"description": "Creates a folder based on the specified body for Folder name and Folder Type\nLeave the url as https://SecureMessagingApi/Folder.svc/\nthere is nothing after the final /"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Folder",
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Folder/{FolderId}",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"FolderName\":\"ApiTest\",\n    \"FolderType\": 0\n}"
+						},
+						"description": "Deletes a folder based on the specified folder id at the end of the URL,\nPerformed using the HTTP Method Delete."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Message",
+			"description": "",
+			"item": [
+				{
+					"name": "Get Inbox Message IDs",
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Message/GetInboxMessageIds",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"FolderId\":1,\n\t\"MessageListFilter\":0,\n\t\"MessageStatusIds\":[1],\n\t\"MustHaveAttachments\":true\n}"
+						},
+						"description": "Returns message ids based off of search parameters entered in the body"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Unread Messages",
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Message/Inbox/Unread",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "Leave as /Unread to retrieve all unread messages,\nInclude ?After={LastMessageIDReceived} to only retrieve messages sent after that ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Message Summaries",
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Message/GetMessageSummaries",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"FolderId\":\"1\",\n    \"LastMessageIdReceived\":\"1\",\n    \"OrderBy\":\"DESC\"\n}"
+						},
+						"description": "Searches based on filter parameters"
+					},
+					"response": []
+				},
+				{
+					"name": "Search the Inbox",
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Message/Inbox/Search",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Filter\":\"Test\",\n    \"FolderId\":\"0\",\n    \"GetInboxUnReadOnly\":\"true\",\n    \"GetRetractedMsgs\":\"true\",\n    \"OrderBy\":\"\",\n    \"OrderDesc\":true,\n    \"PageNum\":1,\n    \"PageSize\":1\n}"
+						},
+						"description": "Searches based on filter parameters"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Message Metadata",
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Message/{MessageId}/Metadata",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "returns tracking and security info for a message"
+					},
+					"response": []
+				},
+				{
+					"name": "Get a Message",
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Message/{MessageId}",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "datamotion",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Dm0tion",
+									"type": "text"
+								}
+							]
+						},
+						"description": "Gets the message specified by the MID in the URL"
+					},
+					"response": []
+				},
+				{
+					"name": "Get a MIME Message",
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Message/{MessageId}/Mime",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "returns Mime format of a message"
+					},
+					"response": []
+				},
+				{
+					"name": "Send a Message",
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Message/",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"To\":[\"email\"],\n\t\"Cc\":[],\n\t\"Bcc\":[],\n\t\"Subject\":\"Send Test\",\n\t\"CreateTime\":\"2:22 PM\",\n\t\"Attachments\":[],\n\t\"HtmlBody\":\"Test\",\n\t\"TextBody\":\"Test\"\n}"
+						},
+						"description": "sends a message based off of content in the body of the post request"
+					},
+					"response": []
+				},
+				{
+					"name": "Send a Message with Attachments",
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Message/",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"To\":[\"email\"],\n\t\"Cc\":[],\n\t\"Bcc\":[],\n\t\"Subject\":\"Send Test with Attachment\",\n\t\"CreateTime\":\"11:51 AM\",\n\t\"Attachments\":[{\n\t    \"AttachmentBase64\":\"SGVsbG8gdGhpcyBpcyBhIHRlc3QgZmlsZS4=\",\n        \"ContentType\":\"text/plain\",\n        \"FileName\":\"text.txt\"\n    }],\n\t\"HtmlBody\":\"Test\",\n\t\"TextBody\":\"Test\"\n}"
+						},
+						"description": "sends a message based off of content in the body of the post request, this one has attachments"
+					},
+					"response": []
+				},
+				{
+					"name": "Send a MIME Message",
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Message/Mime",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"MimeMessage\":\"MIME String Here\"\n}"
+						},
+						"description": "sends Mime message"
+					},
+					"response": []
+				},
+				{
+					"name": "Move a Message",
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Message/{MessageId}/Move",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"DestinationFolderId\":2\n}"
+						},
+						"description": "Moves a message to a specified folder"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Message",
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Message/{MessageId}",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "Deletes the specified message designated by the MID in the url"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Message Permanently",
+					"request": {
+						"url": {
+							"raw": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Message/{MessageId}?Permanently=true",
+							"host": [
+								"{{SECUREMAIL_SANDBOX}}"
+							],
+							"path": [
+								"SecureMessagingApi",
+								"Message",
+								"{MessageId}"
+							],
+							"query": [
+								{
+									"key": "Permanently",
+									"value": "true",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "Deletes the specified message designated by the MID in the url"
+					},
+					"response": []
+				},
+				{
+					"name": "Retract a Message",
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Message/{MessageId}/Retract",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": "retracts a message"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,353 @@
+{
+	"variables": [],
+	"info": {
+		"name": "SecureMail Admin API",
+		"_postman_id": "a19f2226-9bc1-08ef-e30a-8ee23fbae532",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"description": "",
+			"item": [
+				{
+					"name": "Get a SessionKey",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var data = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"SessionKey\", data.SessionKey);"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/Remote/Account/GetSessionKey",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-User-Id",
+								"value": "",
+								"description": ""
+							},
+							{
+								"key": "X-Iv",
+								"value": "",
+								"description": ""
+							},
+							{
+								"key": "X-Company-Automation-ID",
+								"value": "",
+								"description": ""
+							},
+							{
+								"key": "X-Hash",
+								"value": "",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"IpAddress\":\"email\",\n\t\"TimeStamp\":\"password\",\n\t\"Identity\":{\n\t\t\"UID\": 123456,\n         \"Email\": \"email@example.com\",\n         \"UserId\": \"username\",\n         \"SingleSignOnId\": \"user123\"\n\t}\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get an Encryption Key",
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/Remote/Account/GetEncryptionKey",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"UID\":123456,\n\t\"Email\":\"email\",\n\t\"UserId\":\"username\",\n\t\"SingleSignOnId\":\"user123\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Create a New Encryption Key",
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/Remote/Account/NewEncryptionKey",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"UID\":123456,\n\t\"Email\":\"email\",\n\t\"UserId\":\"username\",\n\t\"SingleSignOnId\":\"user123\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Account",
+			"description": "",
+			"item": [
+				{
+					"name": "List User Accounts",
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/Remote/Account/List",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"UserTypeId\":12345,\r\n    \"PageNumber\":1,\r\n    \"CompanyId\":0,\r\n    \"OrderBy\":\"UniqueId\",\r\n    \"Filter\":\"\"\r\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Create a User Account",
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/Remote/Account/Create",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Email\":\"email\",\n\t\"UserId\":\"username\",\n\t\"SingleSignOnId\":\"user21\",\n\t\"Password\":\"|?|Y||p@$5|//0rd\",\n\t\"FirstName\":\"First\",\n\t\"LastName\":\"Last\",\n\t\"Phone\":\"1234567890\",\n\t\"CompanyId\":112,\n\t\"EmployeeId\":\"1564872\",\n\t\"Miscellaneous\":\"\",\n\t\"Disabled\":false,\n\t\"UserTypeId\":\"1\",\n\t\"ReceiveOffers\":false\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "View a User Account",
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/Remote/Account/Read",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"UID\":11597,\r\n   \"Email\":\"jane@example.com\",\r\n   \"UserId\":\"janetheadmin\",\r\n   \"SingleSignOnId\":\"ExampleJane\"\r\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Update a User Account",
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/Remote/Account/Update",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"UniqueId\":5,\r\n    \"Email\":\"jane@example.com\",\r\n    \"UserId\":\"janetheadmin\",\r\n    \"SingleSignOnId\":\"ExampleJane\",\r\n    \"Password\":\"|?|Y||p@$5|//0rd\",\r\n    \"FirstName\":\"Jane\",\r\n    \"LastName\":\"Doe\",\r\n    \"Phone\":\"8675309\",\r\n    \"CompanyId\":112,\r\n    \"EmployeeId\":\"1564872\",\r\n    \"Miscellaneous\":\"\",\r\n    \"Disabled\":false,\r\n    \"UserTypeId\":252,\r\n    \"ReceiveOffers\":false\r\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a User Account",
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/Remote/Account/Delete",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"UID\":11597,\r\n   \"Email\":\"jane@example.com\",\r\n   \"UserId\":\"janetheadmin\",\r\n   \"SingleSignOnId\":\"ExampleJane\"\r\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Types",
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/Remote/Account/GetUserTypes",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "SMTP Gateway",
+			"description": "",
+			"item": [
+				{
+					"name": "Get Company SMTP Credentials",
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/Remote/SMTP/GetCredentials",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/Remote/SMTP/ResetPassword",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t-1\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Update IP Whitelist",
+					"request": {
+						"url": "{{SECUREMAIL_SANDBOX}}/Remote/SMTP/PutCredentials",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t[\r\n\t\t{\r\n\t\t\t\"IpAddress\": \"12.12.12.120\",\r\n            \"Subnet\": \"255.255.255.0\",\r\n            \"Incoming\": true,\r\n            \"Outgoing\": false,\r\n            \"Port\": 25,\r\n            \"Domain\": \"example.com\",\r\n            \"Errors\": {\r\n                \"Field1\": [\r\n                    \"Field1 is missing\",\r\n                    \"Field1 is required.\"\r\n                ],\r\n                \"Field2\": [\r\n                    \"Field2 is missing\",\r\n                    \"Field2 is required.\"\r\n                ]\r\n            }\r\n        },\r\n        {\r\n            \"IpAddress\": \"12.12.12.120\",\r\n            \"Subnet\": \"255.255.255.0\",\r\n            \"Incoming\": true,\r\n            \"Outgoing\": false,\r\n            \"Port\": 25,\r\n            \"Domain\": \"example.com\",\r\n            \"Errors\": {\r\n                \"Field1\": [\r\n                    \"Field1 is missing\",\r\n                    \"Field1 is required.\"\r\n                ],\r\n                \"Field2\": [\r\n                    \"Field2 is missing\",\r\n                    \"Field2 is required.\"\r\n                ]\r\n            }\r\n        }\r\n    ]\r\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

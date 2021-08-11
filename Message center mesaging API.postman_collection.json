@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "71835342-8985-4a94-a436-ac803c746c17",
-		"name": "SecureMail Messaging API (REST) copy",
+		"_postman_id": "121a1f53-9fae-475c-8a76-55f19a243eb5",
+		"name": "Message center mesaging API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -14,11 +14,11 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var data = JSON.parse(responseBody);\r",
 									"postman.setEnvironmentVariable(\"SessionKey\", data.SessionKey);"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -35,12 +35,11 @@
 							"raw": "{\n    \"UserIdOrEmail\":\"email\",\n    \"Password\":\"password\"\n}"
 						},
 						"url": {
-							"raw": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Account/Logon",
+							"raw": "{{BaseURL}}/Account/Logon",
 							"host": [
-								"{{SECUREMAIL_SANDBOX}}"
+								"{{BaseURL}}"
 							],
 							"path": [
-								"SecureMessagingApi",
 								"Account",
 								"Logon"
 							]
@@ -49,7 +48,38 @@
 					"response": []
 				},
 				{
+					"name": "SAML Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"SamlLogonRequestData\":\r\n    {\r\n        \"SamlResponse\": \"Base64StringHere\"\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "{{BaseURL}}/Account/SamlLogon",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"Account",
+								"SamlLogon"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get Your Account Details",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
 						"header": [
@@ -62,13 +92,16 @@
 								"value": "{{SessionKey}}"
 							}
 						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
-							"raw": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Account/Details",
+							"raw": "{{BaseURL}}/Account/Details",
 							"host": [
-								"{{SECUREMAIL_SANDBOX}}"
+								"{{BaseURL}}"
 							],
 							"path": [
-								"SecureMessagingApi",
 								"Account",
 								"Details"
 							]
@@ -95,12 +128,11 @@
 							"raw": "{\n    \"OldPassword\":\"oldpassword\",\n    \"NewPassword\":\"newpassword\"\n}"
 						},
 						"url": {
-							"raw": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Account/ChangePassword",
+							"raw": "{{BaseURL}}/Account/ChangePassword",
 							"host": [
-								"{{SECUREMAIL_SANDBOX}}"
+								"{{BaseURL}}"
 							],
 							"path": [
-								"SecureMessagingApi",
 								"Account",
 								"ChangePassword"
 							]
@@ -122,15 +154,233 @@
 								"value": "{{SessionKey}}"
 							}
 						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
-							"raw": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Account/Logout",
+							"raw": "{{BaseURL}}/Account/Logout",
 							"host": [
-								"{{SECUREMAIL_SANDBOX}}"
+								"{{BaseURL}}"
 							],
 							"path": [
-								"SecureMessagingApi",
 								"Account",
 								"Logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Session Key",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseURL}}/Account/CheckSessionKey",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"Account",
+								"CheckSessionKey"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get File Stats and Restrictions",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{BaseURL}}/Account/FileStats",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"Account",
+								"FileStats"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Cobrand Information",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseURL}}/Account/Cobrand/{Cobrand}",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"Account",
+								"Cobrand",
+								"{Cobrand}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "File",
+			"item": [
+				{
+					"name": "Upload a File",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "text"
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Content-Disposition",
+									"value": "form-data",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "{{Name}}",
+									"type": "text"
+								},
+								{
+									"key": "filename",
+									"value": "\"Test.test\"",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{BaseURL}}/File/Attachment/{MessageId}",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"File",
+								"Attachment",
+								"{MessageId}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a File",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{BaseURL}}/File/DeleteAttachment/{AttachmentId}",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"File",
+								"DeleteAttachment",
+								"{AttachmentId}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Download a File",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseURL}}/File/Download/{AttachmentId}/{FileName}",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"File",
+								"Download",
+								"{AttachmentId}",
+								"{FileName}"
 							]
 						}
 					},
@@ -156,12 +406,11 @@
 							}
 						],
 						"url": {
-							"raw": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Folder/List",
+							"raw": "{{BaseURL}}/Folder/List",
 							"host": [
-								"{{SECUREMAIL_SANDBOX}}"
+								"{{BaseURL}}"
 							],
 							"path": [
-								"SecureMessagingApi",
 								"Folder",
 								"List"
 							]
@@ -189,14 +438,12 @@
 							"raw": "{\n    \"FolderName\":\"Folder Name\",\n    \"FolderType\": 0\n}"
 						},
 						"url": {
-							"raw": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Folder/",
+							"raw": "{{BaseURL}}/Folder",
 							"host": [
-								"{{SECUREMAIL_SANDBOX}}"
+								"{{BaseURL}}"
 							],
 							"path": [
-								"SecureMessagingApi",
-								"Folder",
-								""
+								"Folder"
 							]
 						},
 						"description": "Creates a folder based on the specified body for Folder name and Folder Type\nLeave the url as https://SecureMessagingApi/Folder.svc/\nthere is nothing after the final /"
@@ -219,15 +466,14 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"FolderName\":\"ApiTest\",\n    \"FolderType\": 0\n}"
+							"raw": ""
 						},
 						"url": {
-							"raw": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Folder/{FolderId}",
+							"raw": "{{BaseURL}}/Folder/{FolderId}",
 							"host": [
-								"{{SECUREMAIL_SANDBOX}}"
+								"{{BaseURL}}"
 							],
 							"path": [
-								"SecureMessagingApi",
 								"Folder",
 								"{FolderId}"
 							]
@@ -257,50 +503,19 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"FolderId\":1,\n\t\"MessageListFilter\":0,\n\t\"MessageStatusIds\":[1],\n\t\"MustHaveAttachments\":true\n}"
+							"raw": "{\n    \"FolderId\":1,\n\t\"MessageListFilter\":0,\n\t\"MustHaveAttachments\":true\n}"
 						},
 						"url": {
-							"raw": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Message/GetInboxMessageIds",
+							"raw": "{{BaseURL}}/Message/GetInboxMessageIds",
 							"host": [
-								"{{SECUREMAIL_SANDBOX}}"
+								"{{BaseURL}}"
 							],
 							"path": [
-								"SecureMessagingApi",
 								"Message",
 								"GetInboxMessageIds"
 							]
 						},
 						"description": "Returns message ids based off of search parameters entered in the body"
-					},
-					"response": []
-				},
-				{
-					"name": "Get Unread Messages",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "X-Session-Key",
-								"value": "{{SessionKey}}"
-							}
-						],
-						"url": {
-							"raw": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Message/Inbox/Unread",
-							"host": [
-								"{{SECUREMAIL_SANDBOX}}"
-							],
-							"path": [
-								"SecureMessagingApi",
-								"Message",
-								"Inbox",
-								"Unread"
-							]
-						},
-						"description": "Leave as /Unread to retrieve all unread messages,\nInclude ?After={LastMessageIDReceived} to only retrieve messages sent after that ID."
 					},
 					"response": []
 				},
@@ -320,20 +535,81 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"FolderId\":\"1\",\n    \"LastMessageIdReceived\":\"1\",\n    \"OrderBy\":\"DESC\"\n}"
+							"raw": "{\n    \"FolderId\":\"1\",\n    \"LastMessageIdReceived\":\"1\"\n}"
 						},
 						"url": {
-							"raw": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Message/GetMessageSummaries",
+							"raw": "{{BaseURL}}/Message/GetMessageSummaries",
 							"host": [
-								"{{SECUREMAIL_SANDBOX}}"
+								"{{BaseURL}}"
 							],
 							"path": [
-								"SecureMessagingApi",
 								"Message",
 								"GetMessageSummaries"
 							]
 						},
 						"description": "Searches based on filter parameters"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Message Summaries With Metadata",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"FolderId\": 1,\r\n    \"LastMessageIDReceived\": 248\r\n}"
+						},
+						"url": {
+							"raw": "{{BaseURL}}/Message/GetMessageSummariesWithMetadata",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"Message",
+								"GetMessageSummariesWithMetadata"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Unread Messages",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}"
+							}
+						],
+						"url": {
+							"raw": "{{BaseURL}}/Message/Inbox/Unread",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"Message",
+								"Inbox",
+								"Unread"
+							]
+						},
+						"description": "Leave as /Unread to retrieve all unread messages,\nInclude ?After={LastMessageIDReceived} to only retrieve messages sent after that ID."
 					},
 					"response": []
 				},
@@ -353,51 +629,20 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"Filter\":\"Test\",\n    \"FolderId\":\"0\",\n    \"GetInboxUnReadOnly\":\"true\",\n    \"GetRetractedMsgs\":\"true\",\n    \"OrderBy\":\"\",\n    \"OrderDesc\":true,\n    \"PageNum\":1,\n    \"PageSize\":1\n}"
+							"raw": "{\n    \"Filter\":\"Account\",\n    \"FolderId\":\"0\",\n    \"GetInboxUnReadOnly\":\"true\",\n    \"GetRetractedMsgs\":\"true\",\n    \"OrderBy\":\"\",\n    \"OrderDesc\":true,\n    \"PageNum\":1,\n    \"PageSize\":1\n}"
 						},
 						"url": {
-							"raw": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Message/Inbox/Search",
+							"raw": "{{BaseURL}}/Message/Inbox/Search",
 							"host": [
-								"{{SECUREMAIL_SANDBOX}}"
+								"{{BaseURL}}"
 							],
 							"path": [
-								"SecureMessagingApi",
 								"Message",
 								"Inbox",
 								"Search"
 							]
 						},
 						"description": "Searches based on filter parameters"
-					},
-					"response": []
-				},
-				{
-					"name": "Get Message Metadata",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "X-Session-Key",
-								"value": "{{SessionKey}}"
-							}
-						],
-						"url": {
-							"raw": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Message/{MessageId}/Metadata",
-							"host": [
-								"{{SECUREMAIL_SANDBOX}}"
-							],
-							"path": [
-								"SecureMessagingApi",
-								"Message",
-								"{MessageId}",
-								"Metadata"
-							]
-						},
-						"description": "returns tracking and security info for a message"
 					},
 					"response": []
 				},
@@ -416,17 +661,75 @@
 							}
 						],
 						"url": {
-							"raw": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Message/{MessageId}",
+							"raw": "{{BaseURL}}/Message/{MessageId}",
 							"host": [
-								"{{SECUREMAIL_SANDBOX}}"
+								"{{BaseURL}}"
 							],
 							"path": [
-								"SecureMessagingApi",
 								"Message",
 								"{MessageId}"
 							]
 						},
 						"description": "Gets the message specified by the MID in the URL"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Message Metadata",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}"
+							}
+						],
+						"url": {
+							"raw": "{{BaseURL}}/Message/{MessageId}/Metadata",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"Message",
+								"{MessageId}",
+								"Metadata"
+							]
+						},
+						"description": "returns tracking and security info for a message"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Message Without Attachment Data",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseURL}}/Message/{MessageId}/NoAttachmentData",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"Message",
+								"{MessageId}",
+								"NoAttachmentData"
+							]
+						}
 					},
 					"response": []
 				},
@@ -445,12 +748,11 @@
 							}
 						],
 						"url": {
-							"raw": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Message/{MessageId}/Mime",
+							"raw": "{{BaseURL}}/Message/{MessageId}/Mime",
 							"host": [
-								"{{SECUREMAIL_SANDBOX}}"
+								"{{BaseURL}}"
 							],
 							"path": [
-								"SecureMessagingApi",
 								"Message",
 								"{MessageId}",
 								"Mime"
@@ -476,53 +778,19 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"To\":[\"email\"],\n\t\"Cc\":[],\n\t\"Bcc\":[],\n\t\"Subject\":\"Send Test\",\n\t\"CreateTime\":\"2:22 PM\",\n\t\"Attachments\":[],\n\t\"HtmlBody\":\"Test\",\n\t\"TextBody\":\"Test\"\n}"
+							"raw": "{\n    \"To\": [\"recipient@example.com\"],\n    \"From\": \"sender@example.com\",\n    \"Cc\": [\"cc@example.com\"],\n    \"Bcc\": [\"bcc@example.com\"],\n    \"Subject\": \"Sensitive Information\",\n    \"CreateTime\": \"11:51 AM\",\n    \"Attachments\":\n    [\n        {\n            \"AttachmentBase64\": \"Base64StringHere\",\n            \"ContentType\": \"image/jpeg\",\n            \"FileName\": \"logo.jpeg\"\n        },\n        {\n            \"AttachmentBase64\": \"Base64StringHere\",\n            \"ContentType\": \"image/jpeg\",\n            \"FileName\": \"logo2.jpeg\",\n            \"ContentId\": \"dm2.png@01D3839B.D4260F70\"\n        }\n    ],\n    \"HtmlBody\": \"String content\",\n    \"TextBody\": \"String content\"\n}"
 						},
 						"url": {
-							"raw": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Message/",
+							"raw": "{{BaseURL}}/Message/",
 							"host": [
-								"{{SECUREMAIL_SANDBOX}}"
+								"{{BaseURL}}"
 							],
 							"path": [
-								"SecureMessagingApi",
 								"Message",
 								""
 							]
 						},
 						"description": "sends a message based off of content in the body of the post request"
-					},
-					"response": []
-				},
-				{
-					"name": "Send a Message with Attachments",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "X-Session-Key",
-								"value": "{{SessionKey}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"To\":[\"email\"],\n\t\"Cc\":[],\n\t\"Bcc\":[],\n\t\"Subject\":\"Send Test with Attachment\",\n\t\"CreateTime\":\"11:51 AM\",\n\t\"Attachments\":[{\n\t    \"AttachmentBase64\":\"SGVsbG8gdGhpcyBpcyBhIHRlc3QgZmlsZS4=\",\n        \"ContentType\":\"text/plain\",\n        \"FileName\":\"text.txt\"\n    }],\n\t\"HtmlBody\":\"Test\",\n\t\"TextBody\":\"Test\"\n}"
-						},
-						"url": {
-							"raw": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Message/",
-							"host": [
-								"{{SECUREMAIL_SANDBOX}}"
-							],
-							"path": [
-								"SecureMessagingApi",
-								"Message",
-								""
-							]
-						},
-						"description": "sends a message based off of content in the body of the post request, this one has attachments"
 					},
 					"response": []
 				},
@@ -545,12 +813,11 @@
 							"raw": "{\n    \"MimeMessage\":\"MIME String Here\"\n}"
 						},
 						"url": {
-							"raw": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Message/Mime",
+							"raw": "{{BaseURL}}/Message/Mime",
 							"host": [
-								"{{SECUREMAIL_SANDBOX}}"
+								"{{BaseURL}}"
 							],
 							"path": [
-								"SecureMessagingApi",
 								"Message",
 								"Mime"
 							]
@@ -578,12 +845,11 @@
 							"raw": "{\n    \"DestinationFolderId\":2\n}"
 						},
 						"url": {
-							"raw": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Message/{MessageId}/Move",
+							"raw": "{{BaseURL}}/Message/{MessageId}/Move",
 							"host": [
-								"{{SECUREMAIL_SANDBOX}}"
+								"{{BaseURL}}"
 							],
 							"path": [
-								"SecureMessagingApi",
 								"Message",
 								"{MessageId}",
 								"Move"
@@ -608,48 +874,18 @@
 							}
 						],
 						"url": {
-							"raw": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Message/{MessageId}",
+							"raw": "{{BaseURL}}/Message/{MessageId}?Permanently=True",
 							"host": [
-								"{{SECUREMAIL_SANDBOX}}"
+								"{{BaseURL}}"
 							],
 							"path": [
-								"SecureMessagingApi",
-								"Message",
-								"{MessageId}"
-							]
-						},
-						"description": "Deletes the specified message designated by the MID in the url"
-					},
-					"response": []
-				},
-				{
-					"name": "Delete a Message Permanently",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "X-Session-Key",
-								"value": "{{SessionKey}}"
-							}
-						],
-						"url": {
-							"raw": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Message/{MessageId}?Permanently=true",
-							"host": [
-								"{{SECUREMAIL_SANDBOX}}"
-							],
-							"path": [
-								"SecureMessagingApi",
 								"Message",
 								"{MessageId}"
 							],
 							"query": [
 								{
 									"key": "Permanently",
-									"value": "true"
+									"value": "True"
 								}
 							]
 						},
@@ -676,49 +912,17 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{SECUREMAIL_SANDBOX}}/SecureMessagingApi/Message/{MessageId}/Retract",
+							"raw": "{{BaseURL}}/Message/{MessageId}/Retract",
 							"host": [
-								"{{SECUREMAIL_SANDBOX}}"
+								"{{BaseURL}}"
 							],
 							"path": [
-								"SecureMessagingApi",
 								"Message",
 								"{MessageId}",
 								"Retract"
 							]
 						},
 						"description": "retracts a message"
-					},
-					"response": []
-				},
-				{
-					"name": "Get Message Without Attachment Data",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "X-Session-Key",
-								"value": "{{SessionKey}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{SECUREMAIL_SANDBOX}}/SecureMessagingAPI/Message/{MessageId}/NoAttachmentData",
-							"host": [
-								"{{SECUREMAIL_SANDBOX}}"
-							],
-							"path": [
-								"SecureMessagingAPI",
-								"Message",
-								"{MessageId}",
-								"NoAttachmentData"
-							]
-						}
 					},
 					"response": []
 				},
@@ -739,12 +943,11 @@
 							}
 						],
 						"url": {
-							"raw": "{{SECUREMAIL_SANDBOX}}/SecureMessagingAPI/Message/{AttachmentId}/Attachment",
+							"raw": "{{BaseURL}}/Message/{AttachmentId}/Attachment",
 							"host": [
-								"{{SECUREMAIL_SANDBOX}}"
+								"{{BaseURL}}"
 							],
 							"path": [
-								"SecureMessagingAPI",
 								"Message",
 								"{AttachmentId}",
 								"Attachment"
@@ -754,7 +957,7 @@
 					"response": []
 				},
 				{
-					"name": "Get Message Summaries With Metadata",
+					"name": "Save a Draft",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -771,83 +974,14 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"FolderId\": 1,\r\n    \"LastMessageIDReceived\": 248\r\n}"
+							"raw": "{\r\n    \"To\": [\"recipient@example.com\"],\r\n    \"From\": \"sender@example.com\"\r\n    \"Cc\": [\"\"],\r\n    \"Bcc\": [\"\"],\r\n    \"Subject\": \"Test\",\r\n    \"CreateTime\": \"2016-06-24 15:33:41.740\",\r\n    \"Attachments\": \r\n    [\r\n        {\r\n            \"AttachmentBase64\": \"VGhpcyBpcyBhIHRlc3Q=\",\r\n            \"ContentType\": \"text/plain\",\r\n            \"FileName\": \"mytestfile.txt\"\r\n        }\r\n    ],\r\n    \"HtmlBody\": \"<HTML><HEAD><BODY>Test Inline Attachment:<IMG ALT=\\\"dmlogo\\\" src\\\"cid:dm2.png@01D3839B.D4260F70\\\"</BODY</HEAD></HTML>\",\r\n    \"TextBody\": \"Test Inline Attachment\"\r\n}"
 						},
 						"url": {
-							"raw": "{{SECUREMAIL_SANDBOX}}/SecureMessagingAPI/Message/GetMessageSummariesWithMetadata",
+							"raw": "{{BaseURL}}/Message/SaveDraft",
 							"host": [
-								"{{SECUREMAIL_SANDBOX}}"
+								"{{BaseURL}}"
 							],
 							"path": [
-								"SecureMessagingAPI",
-								"Message",
-								"GetMessageSummariesWithMetadata"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Save a Draft [with inline image]",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							},
-							{
-								"key": "X-Session-Key",
-								"type": "text",
-								"value": "{{SessionKey}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"To\": [\"recipient@example.com\"],\r\n  \"From\": \"sender@example.com\",\r\n  \"Cc\": [\"\"],\r\n  \"Bcc\": [\"\"],\r\n  \"Subject\": \"Test\",\r\n  \"CreateTime\": \"2016-06-24 15:33:41.740\",\r\n  \"Attachments\": [\r\n    {\r\n      \"AttachmentBase64\": \"VGhpcyBpcyBhIHRlc3Q=\",\r\n      \"ContentType\": \"text/plain\",\r\n      \"FileName\": \"mytestfile.txt\"\r\n    }\r\n  ],\r\n  \"HtmlBody\": \"Test\",\r\n  \"TextBody\": \"Test\"\r\n}"
-						},
-						"url": {
-							"raw": "{{SECUREMAIL_SANDBOX}}/SecureMessagingAPI/Message/SaveDraft",
-							"host": [
-								"{{SECUREMAIL_SANDBOX}}"
-							],
-							"path": [
-								"SecureMessagingAPI",
-								"Message",
-								"SaveDraft"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Save a Draft [without inline image]",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							},
-							{
-								"key": "X-Session-Key",
-								"type": "text",
-								"value": "{{SessionKey}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"To\": [\"recipient@example.com\"],\r\n  \"From\": \"sender@example.com\",\r\n  \"Cc\": [\"\"],\r\n  \"Bcc\": [\"\"],\r\n  \"Subject\": \"Test\",\r\n  \"CreateTime\": \"2016-06-24 15:33:41.740\",\r\n  \"Attachments\": [\r\n    {\r\n      \"AttachmentBase64\": \"VGhpcyBpcyBhIHRlc3Q=\",\r\n      \"ContentType\": \"text/plain\",\r\n      \"FileName\": \"mytestfile.txt\"\r\n    }\r\n  ],\r\n  \"HtmlBody\": \"<HTML><HEAD><BODY>Test Inline Attachment:<IMG ALT=\\\"dmlogo\\\" src\\\"cid:dm2.png@01D3839B.D4260F70\\\"</BODY</HEAD></HTML>\",\r\n  \"TextBody\": \"Test Inline Attachment\"\r\n}"
-						},
-						"url": {
-							"raw": "{{SECUREMAIL_SANDBOX}}/SecureMessagingAPI/Message/SaveDraft",
-							"host": [
-								"{{SECUREMAIL_SANDBOX}}"
-							],
-							"path": [
-								"SecureMessagingAPI",
 								"Message",
 								"SaveDraft"
 							]
@@ -876,12 +1010,11 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{SECUREMAIL_SANDBOX}}/SecureMessagingAPI/Message/{MessageId}/SendDraft",
+							"raw": "{{BaseURL}}/Message/{MessageId}/SendDraft",
 							"host": [
-								"{{SECUREMAIL_SANDBOX}}"
+								"{{BaseURL}}"
 							],
 							"path": [
-								"SecureMessagingAPI",
 								"Message",
 								"{MessageId}",
 								"SendDraft"
@@ -889,8 +1022,98 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Reply to a Message",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseURL}}/Message/{MessageId}/Reply",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"Message",
+								"{MessageId}",
+								"Reply"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Forward a Message",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseURL}}/Message/{MessageId}/Reply",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"Message",
+								"{MessageId}",
+								"Reply"
+							]
+						}
+					},
+					"response": []
 				}
 			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "{{SessionKey}}",
+			"value": ""
+		},
+		{
+			"key": "{{BaseURL}}",
+			"value": ""
 		}
 	]
 }

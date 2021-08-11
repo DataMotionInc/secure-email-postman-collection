@@ -1,0 +1,136 @@
+{
+	"info": {
+		"_postman_id": "3d71a79e-87de-4d7c-b5af-b3ba86dfbe26",
+		"name": "Secure Message Delivery API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Send a Secure Message",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-API-Key",
+						"value": "{{UniqueId}}",
+						"type": "text"
+					},
+					{
+						"key": "X-API-Secret",
+						"value": "{{SecretValue}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"From\": \"sender@example.com\",\r\n    \"To\": [\"recipient@example.com\"],\r\n    \"Cc\": [\"cc@example.com\"],\r\n    \"Bcc\": [\"bcc@example.com\"],\r\n    \"Subject\": \"Sensitive Information\",\r\n    \"Attachments\":\r\n    [\r\n        {\r\n            \"AttachmentBase64\": \"Base64StringHere\",\r\n            \"ContentType\": \"image/jpeg\",\r\n            \"FileName\": \"logo2.jpeg\",\r\n            \"ContentId\": \"dm2.png@01D3839B.D4260F70\"\r\n        }\r\n    ],\r\n    \"HtmlBody\": \"String content\",\r\n    \"TextBody\": \"String content\"\r\n}\r\n     "
+				},
+				"url": {
+					"raw": "{{BaseURL}}/{MessageDeliveryType}",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"{MessageDeliveryType}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Track a Secure Message",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-API-Key",
+						"value": "{{UniqueId}}",
+						"type": "text"
+					},
+					{
+						"key": "X-API-Secret",
+						"value": "{{SecretValue}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{BaseURL}}/{TransactionId}/Track",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"{TransactionId}",
+						"Track"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retract a Secure Message",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-API-Key",
+						"value": "{{UniqueId}}",
+						"type": "text"
+					},
+					{
+						"key": "X-API-Secret",
+						"value": "{{SecretValue}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{BaseURL}}/{TransactionId}/Retract",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"{TransactionId}",
+						"Retract"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "{{UniqueId}}",
+			"value": ""
+		},
+		{
+			"key": "{{SecretValue}}",
+			"value": ""
+		}
+	]
+}

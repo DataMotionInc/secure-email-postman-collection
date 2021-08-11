@@ -1,0 +1,442 @@
+{
+	"info": {
+		"_postman_id": "dc335f7c-9488-4ea8-a145-8a14584a4452",
+		"name": "Message center admin API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Get a SessionKey",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"SessionKey\", data.SessionKey);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-User-Id",
+								"value": ""
+							},
+							{
+								"key": "X-IV",
+								"value": ""
+							},
+							{
+								"key": "X-Company-Automation-ID",
+								"value": ""
+							},
+							{
+								"key": "X-Hash",
+								"value": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    {{\"EncryptedJson\"}}\n}"
+						},
+						"url": {
+							"raw": "{{BaseURL}}/Account/GetSessionKey",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"Account",
+								"GetSessionKey"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get an Encryption Key",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"UID\":123456,\n\t\"Email\":\"email@example.com\",\n\t\"UserId\":\"username\",\n\t\"SingleSignOnId\":\"user123\"\n}"
+						},
+						"url": {
+							"raw": "{{BaseURL}}/Account/GetEncryptionKey",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"Account",
+								"GetEncryptionKey"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a New Encryption Key",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"UID\":123456,\n\t\"Email\":\"email@example.com\",\n\t\"UserId\":\"username\",\n\t\"SingleSignOnId\":\"user123\"\n}"
+						},
+						"url": {
+							"raw": "{{BaseURL}}/Account/NewEncryptionKey",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"Account",
+								"NewEncryptionKey"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "List User Accounts",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"UserTypeId\":12345,\r\n    \"PageNumber\":1,\r\n    \"CompanyId\":0,\r\n    \"OrderBy\":\"UniqueId\",\r\n    \"Filter\":\"\"\r\n}"
+						},
+						"url": {
+							"raw": "{{BaseURL}}/Account/List",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"Account",
+								"List"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a User Account",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Email\":\"email@example.com\",\n\t\"UserId\":\"username\",\n\t\"SingleSignOnId\":\"user21\",\n\t\"Password\":\"|?|Y||p@$5|//0rd\",\n\t\"FirstName\":\"First\",\n\t\"LastName\":\"Last\",\n\t\"Phone\":\"1234567890\",\n\t\"CompanyId\":112,\n\t\"EmployeeId\":\"1564872\",\n\t\"Miscellaneous\":\"\",\n\t\"Disabled\":false,\n\t\"UserTypeId\":\"1\",\n\t\"ReceiveOffers\":false\n}"
+						},
+						"url": {
+							"raw": "{{BaseURL}}/Account/Create",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"Account",
+								"Create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View a User Account",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"UID\":11597,\r\n   \"Email\":\"jane@example.com\",\r\n   \"UserId\":\"janetheadmin\",\r\n   \"SingleSignOnId\":\"ExampleJane\"\r\n}"
+						},
+						"url": {
+							"raw": "{{BaseURL}}/Account/Read",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"Account",
+								"Read"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a User Account",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"UniqueId\": 11597,\r\n    \"Email\": \"jane@example.com\",\r\n    \"UserId\": \"janetheadmin\",\r\n    \"SingleSignOnId\": \"ExampleJane\",\r\n    \"Password\": \"|?|Y||p@$5|//0rd\",\r\n    \"FirstName\": \"Jane\",\r\n    \"LastName\": \"Doe\",\r\n    \"Phone\": \"8675309\",\r\n    \"CompanyId\": 112,\r\n    \"EmployeeId\": \"1564872\",\r\n    \"Miscellaneous\": \"\",\r\n    \"Disabled\": false,\r\n    \"UserTypeId\": 252,\r\n    \"ButtonUser\": false,\r\n    \"ReceiveOffers\": false\r\n}"
+						},
+						"url": {
+							"raw": "{{BaseURL}}/Account/Update",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"Account",
+								"Update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a User Account",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"UID\":11597,\r\n   \"Email\":\"jane@example.com\",\r\n   \"UserId\":\"janetheadmin\",\r\n   \"SingleSignOnId\":\"ExampleJane\"\r\n}"
+						},
+						"url": {
+							"raw": "{{BaseURL}}/Account/Delete",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"Account",
+								"Delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Types",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}"
+							}
+						],
+						"url": {
+							"raw": "{{BaseURL}}/Account/GetUserTypes",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"Account",
+								"GetUserTypes"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "SMTP Gateway",
+			"item": [
+				{
+					"name": "Get Company SMTP Credentials",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}"
+							}
+						],
+						"url": {
+							"raw": "{{BaseURL}}/SMTP/GetCredentials",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"SMTP",
+								"GetCredentials"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t-1\n}"
+						},
+						"url": {
+							"raw": "{{BaseURL}}/SMTP/ResetPassword",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"SMTP",
+								"ResetPassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update IP Whitelist",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-Session-Key",
+								"value": "{{SessionKey}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    [\r\n        {\r\n            \"IpAddress\": \"12.12.12.120\",\r\n            \"Subnet\": \"255.255.255.0\",\r\n            \"Incoming\": true,\r\n            \"Outgoing\": false,\r\n            \"Port\": 25,\r\n            \"Domain\": \"example.com\",\r\n            \"Errors\": \r\n            {\r\n                \"Field1\": \r\n                [\r\n                    \"Field1 is missing\",\r\n                    \"Field1 is required.\"\r\n                ],\r\n                \"Field2\": \r\n                [\r\n                    \"Field2 is missing\",\r\n                    \"Field2 is required.\"\r\n                ]\r\n            }\r\n        },\r\n        {\r\n            \"IpAddress\": \"12.12.12.120\",\r\n            \"Subnet\": \"255.255.255.0\",\r\n            \"Incoming\": true,\r\n            \"Outgoing\": false,\r\n            \"Port\": 25,\r\n            \"Domain\": \"example.com\",\r\n            \"Errors\": \r\n            {\r\n                \"Field1\": \r\n                [\r\n                    \"Field1 is missing\",\r\n                    \"Field1 is required.\"\r\n                ],\r\n                \"Field2\": \r\n                [\r\n                    \"Field2 is missing\",\r\n                    \"Field2 is required.\"\r\n                ]\r\n            }\r\n        }\r\n    ]\r\n}"
+						},
+						"url": {
+							"raw": "{{BaseURL}}/SMTP/PutCredentials",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"SMTP",
+								"PutCredentials"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "{{SessionKey}}",
+			"value": ""
+		},
+		{
+			"key": "{{BaseURL}}",
+			"value": ""
+		}
+	]
+}
